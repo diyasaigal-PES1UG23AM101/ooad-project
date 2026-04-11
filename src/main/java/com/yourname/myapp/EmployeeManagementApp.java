@@ -3,6 +3,9 @@ package com.yourname.myapp;
 import com.yourname.myapp.config.HibernateUtil;
 import com.yourname.myapp.service.EmployeeService;
 import com.yourname.myapp.ui.*;
+
+import com.yourname.myapp.recruitment.ui.CandidateListView;
+import com.yourname.myapp.recruitment.ui.RecruitmentDashboardView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +26,10 @@ public class EmployeeManagementApp extends JFrame {
     private EmployeeService employeeService;
     private EmployeeListView employeeListView;
     private DashboardView dashboardView;
+
+    // Recruitment module views
+    private CandidateListView candidateListView;
+    private RecruitmentDashboardView recruitmentDashboardView;
 
     public EmployeeManagementApp() {
         try {
@@ -47,10 +54,13 @@ public class EmployeeManagementApp extends JFrame {
             
             setContentPane(mainPanel);
             
+
             // Initialize views
             dashboardView = new DashboardView(employeeService);
             employeeListView = new EmployeeListView(employeeService);
-            
+            candidateListView = new CandidateListView();
+            recruitmentDashboardView = new RecruitmentDashboardView();
+
             // Set initial view (Dashboard)
             switchToView(dashboardView.getRootPane(), dashboardView);
             
@@ -102,6 +112,7 @@ public class EmployeeManagementApp extends JFrame {
         headerBox.add(headerLabel);
         headerBox.add(versionLabel);
 
+
         // Navigation buttons
         JButton dashboardButton = new JButton("Dashboard");
         dashboardButton.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -111,6 +122,8 @@ public class EmployeeManagementApp extends JFrame {
         dashboardButton.setForeground(Color.WHITE);
         dashboardButton.setBorderPainted(false);
         dashboardButton.setFocusPainted(false);
+        dashboardButton.setOpaque(true);
+        dashboardButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         dashboardButton.addActionListener(e -> switchToView(dashboardView.getRootPane(), dashboardView));
 
         JButton employeeListButton = new JButton("Employee List");
@@ -121,7 +134,33 @@ public class EmployeeManagementApp extends JFrame {
         employeeListButton.setForeground(Color.WHITE);
         employeeListButton.setBorderPainted(false);
         employeeListButton.setFocusPainted(false);
+        employeeListButton.setOpaque(true);
+        employeeListButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         employeeListButton.addActionListener(e -> switchToView(employeeListView.getRootPane(), employeeListView));
+
+        JButton recruitmentDashboardButton = new JButton("Recruitment Dashboard");
+        recruitmentDashboardButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        recruitmentDashboardButton.setMaximumSize(new Dimension(180, 40));
+        recruitmentDashboardButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        recruitmentDashboardButton.setBackground(new Color(52, 73, 94));
+        recruitmentDashboardButton.setForeground(Color.WHITE);
+        recruitmentDashboardButton.setBorderPainted(false);
+        recruitmentDashboardButton.setFocusPainted(false);
+        recruitmentDashboardButton.setOpaque(true);
+        recruitmentDashboardButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        recruitmentDashboardButton.addActionListener(e -> switchToView(recruitmentDashboardView.getRootPane(), recruitmentDashboardView));
+
+        JButton candidateListButton = new JButton("Candidate List");
+        candidateListButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        candidateListButton.setMaximumSize(new Dimension(180, 40));
+        candidateListButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        candidateListButton.setBackground(new Color(52, 73, 94));
+        candidateListButton.setForeground(Color.WHITE);
+        candidateListButton.setBorderPainted(false);
+        candidateListButton.setFocusPainted(false);
+        candidateListButton.setOpaque(true);
+        candidateListButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        candidateListButton.addActionListener(e -> switchToView(candidateListView.getRootPane(), candidateListView));
 
         JButton addEmployeeButton = new JButton("Add Employee");
         addEmployeeButton.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -131,6 +170,8 @@ public class EmployeeManagementApp extends JFrame {
         addEmployeeButton.setForeground(Color.WHITE);
         addEmployeeButton.setBorderPainted(false);
         addEmployeeButton.setFocusPainted(false);
+        addEmployeeButton.setOpaque(true);
+        addEmployeeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         addEmployeeButton.addActionListener(e -> openAddEmployeeForm());
 
         JButton refreshButton = new JButton("Refresh");
@@ -141,9 +182,13 @@ public class EmployeeManagementApp extends JFrame {
         refreshButton.setForeground(Color.WHITE);
         refreshButton.setBorderPainted(false);
         refreshButton.setFocusPainted(false);
+        refreshButton.setOpaque(true);
+        refreshButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         refreshButton.addActionListener(e -> {
             employeeListView.refresh();
             dashboardView.refresh();
+            candidateListView.refresh();
+            recruitmentDashboardView.refresh();
         });
 
         JButton exitButton = new JButton("Exit");
@@ -154,6 +199,8 @@ public class EmployeeManagementApp extends JFrame {
         exitButton.setForeground(Color.WHITE);
         exitButton.setBorderPainted(false);
         exitButton.setFocusPainted(false);
+        exitButton.setOpaque(true);
+        exitButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         exitButton.addActionListener(e -> dispose());
 
         // Add components to sidebar
@@ -161,7 +208,12 @@ public class EmployeeManagementApp extends JFrame {
         sidebar.add(Box.createVerticalStrut(10));
         sidebar.add(dashboardButton);
         sidebar.add(Box.createVerticalStrut(5));
+
         sidebar.add(employeeListButton);
+        sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(recruitmentDashboardButton);
+        sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(candidateListButton);
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(addEmployeeButton);
         sidebar.add(Box.createVerticalStrut(5));
@@ -178,17 +230,21 @@ public class EmployeeManagementApp extends JFrame {
     /**
      * Switch to a different view
      */
-    private void switchToView(JPanel view, Object viewObject) {
+    private void switchToView(Container view, Object viewObject) {
         contentPanel.removeAll();
-        contentPanel.add(view, BorderLayout.CENTER);
+        contentPanel.add((Component) view, BorderLayout.CENTER);
         contentPanel.revalidate();
         contentPanel.repaint();
-        
+
         // Refresh the view if applicable
         if (viewObject instanceof DashboardView) {
             ((DashboardView) viewObject).refresh();
         } else if (viewObject instanceof EmployeeListView) {
             ((EmployeeListView) viewObject).refresh();
+        } else if (viewObject instanceof RecruitmentDashboardView) {
+            ((RecruitmentDashboardView) viewObject).refresh();
+        } else if (viewObject instanceof CandidateListView) {
+            ((CandidateListView) viewObject).refresh();
         }
     }
 
