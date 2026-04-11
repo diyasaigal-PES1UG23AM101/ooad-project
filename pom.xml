@@ -39,6 +39,14 @@
       <version>8.2.0</version>
     </dependency>
 
+    <!-- Lombok for code generation (getters/setters, etc.) -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.32</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Removed Lombok - using manual getters/setters instead -->
 
     <!-- Logging -->
