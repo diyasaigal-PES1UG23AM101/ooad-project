@@ -2,15 +2,18 @@ package com.yourname.myapp.ui;
 
 import com.yourname.myapp.dto.DashboardStats;
 import com.yourname.myapp.service.EmployeeService;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 
 /**
  * Dashboard view showing employee statistics and metrics.
@@ -18,7 +21,7 @@ import org.slf4j.LoggerFactory;
 public class DashboardView {
     private static final Logger logger = LoggerFactory.getLogger(DashboardView.class);
     private final EmployeeService employeeService;
-    private VBox rootPane;
+    private JPanel rootPane;
 
     public DashboardView(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -29,93 +32,94 @@ public class DashboardView {
      * Initialize the dashboard UI
      */
     private void initializeUI() {
-        rootPane = new VBox(20);
-        rootPane.setPadding(new Insets(20));
-        rootPane.setStyle("-fx-background-color: #f5f5f5;");
-        rootPane.setPrefWidth(Double.MAX_VALUE);
-        rootPane.setPrefHeight(Double.MAX_VALUE);
+        rootPane = new JPanel(new BorderLayout(20, 20));
+        rootPane.setBackground(new Color(245, 245, 245));
+        rootPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Title
-        Label titleLabel = new Label("Dashboard");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        rootPane.getChildren().add(titleLabel);
+        JLabel titleLabel = new JLabel("Dashboard");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        rootPane.add(titleLabel, BorderLayout.NORTH);
 
-        // Statistics cards
-        GridPane statsGrid = createStatisticsGrid();
-        rootPane.getChildren().add(statsGrid);
+        // Statistics cards panel
+        JPanel statsPanel = createStatisticsPanel();
+        rootPane.add(statsPanel, BorderLayout.CENTER);
     }
 
     /**
-     * Create the statistics grid with employee metrics
+     * Create the statistics panel with employee metrics
      */
-    private GridPane createStatisticsGrid() {
-        GridPane grid = new GridPane();
-        grid.setHgap(20);
-        grid.setVgap(20);
-        grid.setPadding(new Insets(10));
-        grid.setPrefWidth(Double.MAX_VALUE);
-        grid.setStyle("-fx-background-color: #f5f5f5;");
+    private JPanel createStatisticsPanel() {
+        // Outer wrapper to prevent the cards from stretching too large
+        JPanel wrapper = new JPanel(new BorderLayout());
+        wrapper.setBackground(new Color(245, 245, 245));
+        
+        JPanel panel = new JPanel(new GridLayout(1, 4, 15, 15));
+        panel.setBackground(new Color(245, 245, 245));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
+        panel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 120));
 
         try {
             DashboardStats stats = employeeService.getDashboardStats();
 
             // Total Employees Card
-            VBox totalCard = createStatCard("Total Employees", String.valueOf(stats.getTotalEmployeeCount()), "#3498db");
-            grid.add(totalCard, 0, 0);
+            JPanel totalCard = createStatCard("Total Employees", String.valueOf(stats.getTotalEmployeeCount()), new Color(52, 152, 219));
+            panel.add(totalCard);
 
             // Active Employees Card
-            VBox activeCard = createStatCard("Active Employees", String.valueOf(stats.getActiveEmployeeCount()), "#2ecc71");
-            grid.add(activeCard, 1, 0);
+            JPanel activeCard = createStatCard("Active Employees", String.valueOf(stats.getActiveEmployeeCount()), new Color(46, 204, 113));
+            panel.add(activeCard);
 
             // On Leave Card
-            VBox onLeaveCard = createStatCard("On Leave", String.valueOf(stats.getOnLeaveCount()), "#f39c12");
-            grid.add(onLeaveCard, 2, 0);
+            JPanel onLeaveCard = createStatCard("On Leave", String.valueOf(stats.getOnLeaveCount()), new Color(243, 156, 18));
+            panel.add(onLeaveCard);
 
             // New Joiners Card
-            VBox newJoinersCard = createStatCard("New Joiners (This Month)", String.valueOf(stats.getNewJoinersCount()), "#9b59b6");
-            grid.add(newJoinersCard, 3, 0);
+            JPanel newJoinersCard = createStatCard("New Joiners (This Month)", String.valueOf(stats.getNewJoinersCount()), new Color(155, 89, 182));
+            panel.add(newJoinersCard);
 
             logger.info("Dashboard statistics loaded successfully");
         } catch (Exception e) {
             logger.error("Error loading dashboard statistics", e);
-            Label errorLabel = new Label("Error loading statistics: " + e.getMessage());
-            errorLabel.setStyle("-fx-text-fill: red;");
-            grid.add(errorLabel, 0, 0);
+            JLabel errorLabel = new JLabel("Error loading statistics: " + e.getMessage());
+            errorLabel.setForeground(Color.RED);
+            wrapper.add(errorLabel, BorderLayout.CENTER);
         }
 
-        return grid;
+        wrapper.add(panel, BorderLayout.NORTH);
+        return wrapper;
     }
 
     /**
      * Create a statistics card with count and title
      */
-    private VBox createStatCard(String title, String value, String color) {
-        VBox card = new VBox(10);
-        card.setPadding(new Insets(20));
-        card.setAlignment(Pos.CENTER);
-        card.setStyle("-fx-background-color: white;" +
-                "-fx-border-color: " + color + ";" +
-                "-fx-border-width: 2;" +
-                "-fx-border-radius: 5;" +
-                "-fx-background-radius: 5;");
-        card.setPrefWidth(200);
+    private JPanel createStatCard(String title, String value, Color color) {
+        JPanel card = new JPanel(new BorderLayout(10, 10));
+        card.setBackground(Color.WHITE);
+        card.setBorder(new LineBorder(color, 2, true));
+        card.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                new LineBorder(color, 2, true),
+                javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15)
+        ));
 
-        Label valueLabel = new Label(value);
-        valueLabel.setFont(Font.font("Arial", FontWeight.BOLD, 32));
-        valueLabel.setStyle("-fx-text-fill: " + color + ";");
+        JLabel valueLabel = new JLabel(value, SwingConstants.CENTER);
+        valueLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        valueLabel.setForeground(color);
 
-        Label titleLabel = new Label(title);
-        titleLabel.setFont(Font.font("Arial", 14));
-        titleLabel.setStyle("-fx-text-fill: #333;");
+        JLabel titleLabel = new JLabel(title, SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+        titleLabel.setForeground(new Color(51, 51, 51));
 
-        card.getChildren().addAll(valueLabel, titleLabel);
+        card.add(valueLabel, BorderLayout.CENTER);
+        card.add(titleLabel, BorderLayout.SOUTH);
+
         return card;
     }
 
     /**
      * Get the root pane of this view
      */
-    public VBox getRootPane() {
+    public JPanel getRootPane() {
         return rootPane;
     }
 
@@ -123,12 +127,10 @@ public class DashboardView {
      * Refresh the dashboard data
      */
     public void refresh() {
-        // Remove the old grid (it's the second child, after the title)
-        if (rootPane.getChildren().size() > 1) {
-            rootPane.getChildren().remove(1);
-        }
-        // Add a fresh grid with updated statistics
-        GridPane statsGrid = createStatisticsGrid();
-        rootPane.getChildren().add(statsGrid);
+        rootPane.remove(rootPane.getComponentCount() - 1);
+        JPanel statsPanel = createStatisticsPanel();
+        rootPane.add(statsPanel, BorderLayout.CENTER);
+        rootPane.revalidate();
+        rootPane.repaint();
     }
 }

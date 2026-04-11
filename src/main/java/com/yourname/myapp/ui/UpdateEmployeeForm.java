@@ -5,142 +5,204 @@ import com.yourname.myapp.entity.Employee;
 import com.yourname.myapp.entity.EmploymentStatus;
 import com.yourname.myapp.service.EmployeeService;
 import com.yourname.myapp.ui.util.DialogUtil;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
 /**
- * Form for updating an existing employee.
+ * Form for updating an existing employee (Swing version).
  */
-public class UpdateEmployeeForm {
+public class UpdateEmployeeForm extends JDialog {
     private static final Logger logger = LoggerFactory.getLogger(UpdateEmployeeForm.class);
     private final EmployeeService employeeService;
     private final Employee employee;
-    private final Stage stage;
     private Runnable onSuccessCallback;
 
-    public UpdateEmployeeForm(EmployeeService employeeService, Employee employee) {
+    // Form fields
+    private JLabel idField;
+    private JTextField nameField;
+    private JComboBox<String> departmentField;
+    private JComboBox<String> roleField;
+    private JComboBox<EmploymentStatus> statusField;
+
+    public UpdateEmployeeForm(Frame parent, EmployeeService employeeService, Employee employee) {
+        super(parent, "Update Employee", true);
         this.employeeService = employeeService;
         this.employee = employee;
-        this.stage = new Stage();
-        stage.setTitle("Update Employee");
-        stage.setWidth(500);
-        stage.setHeight(400);
         initializeUI();
+        setLocationRelativeTo(parent);
     }
 
     /**
      * Initialize the form UI with existing employee data
      */
     private void initializeUI() {
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(20));
-        gridPane.setHgap(10);
-        gridPane.setVgap(15);
-        gridPane.setStyle("-fx-background-color: #f5f5f5;");
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setSize(500, 450);
+
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(new Color(245, 245, 245));
 
         // Title
-        Label titleLabel = new Label("Update Employee");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-        GridPane.setColumnSpan(titleLabel, 2);
-        gridPane.add(titleLabel, 0, 0);
+        JLabel titleLabel = new JLabel("Update Employee");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        mainPanel.add(titleLabel, BorderLayout.NORTH);
+
+        // Form fields panel
+        JPanel formPanel = createFormPanel();
+        mainPanel.add(formPanel, BorderLayout.CENTER);
+
+        // Buttons panel
+        JPanel buttonPanel = createButtonPanel();
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        setContentPane(mainPanel);
+    }
+
+    /**
+     * Create the form fields panel
+     */
+    private JPanel createFormPanel() {
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(new Color(245, 245, 245));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Employee ID (read-only)
-        Label idLabel = new Label("Employee ID:");
-        idLabel.setFont(Font.font("Arial", 12));
-        Label idValue = new Label(employee.getEmployeeId());
-        idValue.setPrefWidth(300);
-        idValue.setStyle("-fx-border-color: #ddd; -fx-padding: 5;");
-        gridPane.add(idLabel, 0, 1);
-        gridPane.add(idValue, 1, 1);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.3;
+        JLabel idLabel = new JLabel("Employee ID:");
+        idLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        formPanel.add(idLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        idField = new JLabel(employee.getEmployeeId());
+        idField.setFont(new Font("Arial", Font.PLAIN, 12));
+        idField.setBorder(BorderFactory.createLineBorder(new Color(221, 221, 221)));
+        formPanel.add(idField, gbc);
 
         // Employee Name
-        Label nameLabel = new Label("Employee Name:");
-        nameLabel.setFont(Font.font("Arial", 12));
-        TextField nameField = new TextField();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0.3;
+        JLabel nameLabel = new JLabel("Employee Name:");
+        nameLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        formPanel.add(nameLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        nameField = new JTextField(20);
         nameField.setText(employee.getEmployeeName());
-        nameField.setPrefWidth(300);
-        gridPane.add(nameLabel, 0, 2);
-        gridPane.add(nameField, 1, 2);
+        nameField.setPreferredSize(new Dimension(300, 25));
+        formPanel.add(nameField, gbc);
 
         // Department
-        Label deptLabel = new Label("Department:");
-        deptLabel.setFont(Font.font("Arial", 12));
-        ComboBox<String> departmentCombo = new ComboBox<>();
-        departmentCombo.getItems().addAll(
-                "IT", "HR", "Finance", "Operations", "Sales", "Marketing", "Development"
-        );
-        departmentCombo.setValue(employee.getDepartment());
-        departmentCombo.setPrefWidth(300);
-        gridPane.add(deptLabel, 0, 3);
-        gridPane.add(departmentCombo, 1, 3);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 0.3;
+        JLabel deptLabel = new JLabel("Department:");
+        deptLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        formPanel.add(deptLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        departmentField = new JComboBox<>();
+        departmentField.addItem("IT");
+        departmentField.addItem("HR");
+        departmentField.addItem("Finance");
+        departmentField.addItem("Operations");
+        departmentField.addItem("Sales");
+        departmentField.addItem("Marketing");
+        departmentField.addItem("Development");
+        departmentField.setSelectedItem(employee.getDepartment());
+        departmentField.setPreferredSize(new Dimension(300, 25));
+        formPanel.add(departmentField, gbc);
 
         // Job Role
-        Label roleLabel = new Label("Job Role:");
-        roleLabel.setFont(Font.font("Arial", 12));
-        ComboBox<String> roleCombo = new ComboBox<>();
-        roleCombo.getItems().addAll(
-                "Manager", "Developer", "Analyst", "Consultant", "Coordinator", "Executive", "Other"
-        );
-        roleCombo.setValue(employee.getJobRole());
-        roleCombo.setPrefWidth(300);
-        gridPane.add(roleLabel, 0, 4);
-        gridPane.add(roleCombo, 1, 4);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.weightx = 0.3;
+        JLabel roleLabel = new JLabel("Job Role:");
+        roleLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        formPanel.add(roleLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        roleField = new JComboBox<>();
+        roleField.addItem("Manager");
+        roleField.addItem("Developer");
+        roleField.addItem("Analyst");
+        roleField.addItem("Consultant");
+        roleField.addItem("Coordinator");
+        roleField.addItem("Executive");
+        roleField.addItem("Other");
+        roleField.setSelectedItem(employee.getJobRole());
+        roleField.setPreferredSize(new Dimension(300, 25));
+        formPanel.add(roleField, gbc);
 
         // Employment Status
-        Label statusLabel = new Label("Employment Status:");
-        statusLabel.setFont(Font.font("Arial", 12));
-        ComboBox<EmploymentStatus> statusCombo = new ComboBox<>();
-        statusCombo.getItems().addAll(EmploymentStatus.values());
-        statusCombo.setValue(employee.getEmploymentStatus());
-        statusCombo.setPrefWidth(300);
-        gridPane.add(statusLabel, 0, 5);
-        gridPane.add(statusCombo, 1, 5);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.weightx = 0.3;
+        JLabel statusLabel = new JLabel("Employment Status:");
+        statusLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        formPanel.add(statusLabel, gbc);
 
-        // Buttons
-        HBox buttonBox = new HBox(10);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setPadding(new Insets(20, 0, 0, 0));
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        statusField = new JComboBox<>();
+        for (EmploymentStatus status : EmploymentStatus.values()) {
+            statusField.addItem(status);
+        }
+        statusField.setSelectedItem(employee.getEmploymentStatus());
+        statusField.setPreferredSize(new Dimension(300, 25));
+        formPanel.add(statusField, gbc);
 
-        Button updateButton = new Button("Update");
-        updateButton.setPrefWidth(100);
-        updateButton.setStyle("-fx-font-size: 12;");
-        updateButton.setOnAction(event -> {
-            handleUpdate(nameField, departmentCombo, roleCombo, statusCombo);
-        });
+        return formPanel;
+    }
 
-        Button cancelButton = new Button("Cancel");
-        cancelButton.setPrefWidth(100);
-        cancelButton.setStyle("-fx-font-size: 12;");
-        cancelButton.setOnAction(event -> stage.close());
+    /**
+     * Create the button panel
+     */
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setBorder(BorderFactory.createLineBorder(new Color(221, 221, 221)));
 
-        buttonBox.getChildren().addAll(updateButton, cancelButton);
-        GridPane.setColumnSpan(buttonBox, 2);
-        gridPane.add(buttonBox, 0, 6);
+        JButton updateButton = new JButton("Update");
+        updateButton.setPreferredSize(new Dimension(100, 35));
+        updateButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        updateButton.addActionListener(this::handleUpdate);
 
-        Scene scene = new Scene(gridPane);
-        stage.setScene(scene);
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setPreferredSize(new Dimension(100, 35));
+        cancelButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        cancelButton.addActionListener(e -> dispose());
+
+        buttonPanel.add(updateButton);
+        buttonPanel.add(cancelButton);
+
+        return buttonPanel;
     }
 
     /**
      * Handle update button action
      */
-    private void handleUpdate(TextField nameField, ComboBox<String> departmentCombo,
-                             ComboBox<String> roleCombo, ComboBox<EmploymentStatus> statusCombo) {
+    private void handleUpdate(ActionEvent event) {
         try {
             // Validate inputs
             String name = nameField.getText().trim();
-            String department = departmentCombo.getValue();
-            String role = roleCombo.getValue();
-            EmploymentStatus status = statusCombo.getValue();
+            String department = (String) departmentField.getSelectedItem();
+            String role = (String) roleField.getSelectedItem();
+            EmploymentStatus status = (EmploymentStatus) statusField.getSelectedItem();
 
             if (name.isEmpty()) {
                 DialogUtil.showWarning("Validation Error", "Empty Field", "Please enter employee name");
@@ -170,7 +232,7 @@ public class UpdateEmployeeForm {
                 onSuccessCallback.run();
             }
             
-            stage.close();
+            dispose();
             logger.info("Employee updated successfully: {}", employee.getEmployeeId());
         } catch (Exception e) {
             logger.error("Error updating employee", e);
@@ -188,7 +250,8 @@ public class UpdateEmployeeForm {
     /**
      * Show the form
      */
+    @Override
     public void show() {
-        stage.show();
+        super.show();
     }
 }
