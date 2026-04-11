@@ -1,13 +1,10 @@
 package com.yourname.myapp.ui.util;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
+import javax.swing.JOptionPane;
 import java.util.Optional;
 
 /**
- * Utility class for displaying JavaFX dialogs and alerts.
+ * Utility class for displaying Swing dialogs and alerts.
  */
 public class DialogUtil {
 
@@ -15,55 +12,36 @@ public class DialogUtil {
      * Show information alert
      */
     public static void showInfo(String title, String header, String content) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
+        JOptionPane.showMessageDialog(null, header + "\n" + content, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
      * Show error alert
      */
     public static void showError(String title, String header, String content) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
+        JOptionPane.showMessageDialog(null, header + "\n" + content, title, JOptionPane.ERROR_MESSAGE);
     }
 
     /**
      * Show warning alert
      */
     public static void showWarning(String title, String header, String content) {
-        Alert alert = new Alert(AlertType.WARNING);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
+        JOptionPane.showMessageDialog(null, header + "\n" + content, title, JOptionPane.WARNING_MESSAGE);
     }
 
     /**
      * Show confirmation dialog
      */
     public static boolean showConfirmation(String title, String header, String content) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get() == ButtonType.OK;
+        int result = JOptionPane.showConfirmDialog(null, header + "\n" + content, title, JOptionPane.YES_NO_OPTION);
+        return result == JOptionPane.YES_OPTION;
     }
 
     /**
      * Show text input dialog
      */
     public static Optional<String> showTextInput(String title, String header, String content) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle(title);
-        dialog.setHeaderText(header);
-        dialog.setContentText(content);
-        return dialog.showAndWait();
+        String result = JOptionPane.showInputDialog(null, header + "\n" + content, title, JOptionPane.QUESTION_MESSAGE);
+        return Optional.ofNullable(result);
     }
 }

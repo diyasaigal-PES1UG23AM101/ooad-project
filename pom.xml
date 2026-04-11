@@ -15,27 +15,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <javafx.version>21.0.2</javafx.version>
-    <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
   </properties>
 
   <dependencies>
-    <!-- JavaFX UI Framework -->
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-controls</artifactId>
-      <version>${javafx.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
-      <version>${javafx.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-graphics</artifactId>
-      <version>${javafx.version}</version>
-    </dependency>
+    <!-- Swing is built-in with Java, no dependency needed -->
 
     <!-- JPA/Hibernate -->
     <dependency>
@@ -89,16 +72,6 @@
         <configuration>
           <source>11</source>
           <target>11</target>
-        </configuration>
-      </plugin>
-
-      <!-- JavaFX Maven Plugin -->
-      <plugin>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-maven-plugin</artifactId>
-        <version>${javafx.maven.plugin.version}</version>
-        <configuration>
-          <mainClass>com.yourname.myapp.EmployeeManagementApp</mainClass>
         </configuration>
       </plugin>
 

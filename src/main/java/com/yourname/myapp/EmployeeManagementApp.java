@@ -3,66 +3,67 @@ package com.yourname.myapp;
 import com.yourname.myapp.config.HibernateUtil;
 import com.yourname.myapp.service.EmployeeService;
 import com.yourname.myapp.ui.*;
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 /**
- * Main application class for Employee Information Management System (EIMS).
- * Manages the primary stage and navigation between views.
+ * Main application class for Employee Information Management System (EIMS) - Swing version.
+ * Manages the primary frame and navigation between views.
  */
-public class EmployeeManagementApp extends Application {
+public class EmployeeManagementApp extends JFrame {
     private static final Logger logger = LoggerFactory.getLogger(EmployeeManagementApp.class);
     
-    private Stage primaryStage;
-    private BorderPane mainLayout;
+    private JPanel mainPanel;
+    private JPanel contentPanel;
     private EmployeeService employeeService;
     private EmployeeListView employeeListView;
     private DashboardView dashboardView;
 
-    @Override
-    public void start(Stage primaryStage) {
+    public EmployeeManagementApp() {
         try {
-            this.primaryStage = primaryStage;
             this.employeeService = new EmployeeService();
-
+            
+            // Frame setup
+            setTitle("Employee Information Management System (EIMS)");
+            setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            setSize(1200, 700);
+            setLocationRelativeTo(null);
+            
             // Create main layout
-            mainLayout = new BorderPane();
-
+            mainPanel = new JPanel(new BorderLayout());
+            
             // Create sidebar
-            VBox sidebar = createSidebar();
-            mainLayout.setLeft(sidebar);
-
+            JPanel sidebar = createSidebar();
+            mainPanel.add(sidebar, BorderLayout.WEST);
+            
+            // Create content panel
+            contentPanel = new JPanel(new BorderLayout());
+            mainPanel.add(contentPanel, BorderLayout.CENTER);
+            
+            setContentPane(mainPanel);
+            
             // Initialize views
             dashboardView = new DashboardView(employeeService);
             employeeListView = new EmployeeListView(employeeService);
-
+            
             // Set initial view (Dashboard)
-            mainLayout.setCenter(dashboardView.getRootPane());
-
-            // Create and show scene
-            Scene scene = new Scene(mainLayout, 1200, 700);
-            primaryStage.setTitle("Employee Information Management System (EIMS)");
-            primaryStage.setScene(scene);
-            primaryStage.show();
-
-            logger.info("EIMS Application started successfully");
-
+            switchToView(dashboardView.getRootPane(), dashboardView);
+            
             // Setup close event handler
-            primaryStage.setOnCloseRequest(event -> {
-                onApplicationClose();
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    onApplicationClose();
+                }
             });
-
+            
+            logger.info("EIMS Application started successfully");
+            
         } catch (Exception e) {
             logger.error("Failed to start application", e);
             e.printStackTrace();
@@ -72,65 +73,104 @@ public class EmployeeManagementApp extends Application {
     /**
      * Create the sidebar with navigation buttons
      */
-    private VBox createSidebar() {
-        VBox sidebar = new VBox(10);
-        sidebar.setPadding(new Insets(20));
-        sidebar.setStyle("-fx-background-color: #2c3e50;");
-        sidebar.setPrefWidth(200);
+    private JPanel createSidebar() {
+        JPanel sidebar = new JPanel();
+        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
+        sidebar.setBackground(new Color(44, 62, 80));
+        sidebar.setPreferredSize(new Dimension(200, getHeight()));
+        sidebar.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
         // Header
-        Label headerLabel = new Label("EIMS");
-        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        headerLabel.setStyle("-fx-text-fill: white;");
+        JLabel headerLabel = new JLabel("EIMS");
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        headerLabel.setForeground(Color.WHITE);
+        headerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        Label versionLabel = new Label("v1.0");
-        versionLabel.setStyle("-fx-text-fill: #bdc3c7; -fx-font-size: 10;");
+        JLabel versionLabel = new JLabel("v1.0");
+        versionLabel.setFont(new Font("Arial", Font.PLAIN, 10));
+        versionLabel.setForeground(new Color(189, 195, 199));
+        versionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        VBox headerBox = new VBox(5);
-        headerBox.getChildren().addAll(headerLabel, versionLabel);
-        headerBox.setPadding(new Insets(0, 0, 20, 0));
-        headerBox.setStyle("-fx-border-color: #34495e; -fx-border-width: 0 0 2 0;");
+        JPanel headerBox = new JPanel();
+        headerBox.setLayout(new BoxLayout(headerBox, BoxLayout.Y_AXIS));
+        headerBox.setBackground(new Color(44, 62, 80));
+        headerBox.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(52, 73, 94)),
+                BorderFactory.createEmptyBorder(0, 0, 20, 0)
+        ));
+        headerBox.setMaximumSize(new Dimension(180, 60));
+        headerBox.add(headerLabel);
+        headerBox.add(versionLabel);
 
         // Navigation buttons
-        Button dashboardButton = new Button("Dashboard");
-        dashboardButton.setPrefWidth(170);
-        dashboardButton.setStyle("-fx-font-size: 12; -fx-padding: 10;");
-        dashboardButton.setOnAction(event -> switchToView(dashboardView.getRootPane(), dashboardView));
+        JButton dashboardButton = new JButton("Dashboard");
+        dashboardButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        dashboardButton.setMaximumSize(new Dimension(180, 40));
+        dashboardButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        dashboardButton.setBackground(new Color(52, 73, 94));
+        dashboardButton.setForeground(Color.WHITE);
+        dashboardButton.setBorderPainted(false);
+        dashboardButton.setFocusPainted(false);
+        dashboardButton.addActionListener(e -> switchToView(dashboardView.getRootPane(), dashboardView));
 
-        Button employeeListButton = new Button("Employee List");
-        employeeListButton.setPrefWidth(170);
-        employeeListButton.setStyle("-fx-font-size: 12; -fx-padding: 10;");
-        employeeListButton.setOnAction(event -> switchToView(employeeListView.getRootPane(), employeeListView));
+        JButton employeeListButton = new JButton("Employee List");
+        employeeListButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        employeeListButton.setMaximumSize(new Dimension(180, 40));
+        employeeListButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        employeeListButton.setBackground(new Color(52, 73, 94));
+        employeeListButton.setForeground(Color.WHITE);
+        employeeListButton.setBorderPainted(false);
+        employeeListButton.setFocusPainted(false);
+        employeeListButton.addActionListener(e -> switchToView(employeeListView.getRootPane(), employeeListView));
 
-        Button addEmployeeButton = new Button("Add Employee");
-        addEmployeeButton.setPrefWidth(170);
-        addEmployeeButton.setStyle("-fx-font-size: 12; -fx-padding: 10; -fx-background-color: #27ae60;");
-        addEmployeeButton.setOnAction(event -> openAddEmployeeForm());
+        JButton addEmployeeButton = new JButton("Add Employee");
+        addEmployeeButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        addEmployeeButton.setMaximumSize(new Dimension(180, 40));
+        addEmployeeButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        addEmployeeButton.setBackground(new Color(39, 174, 96));
+        addEmployeeButton.setForeground(Color.WHITE);
+        addEmployeeButton.setBorderPainted(false);
+        addEmployeeButton.setFocusPainted(false);
+        addEmployeeButton.addActionListener(e -> openAddEmployeeForm());
 
-        // Refresh button
-        Button refreshButton = new Button("Refresh");
-        refreshButton.setPrefWidth(170);
-        refreshButton.setStyle("-fx-font-size: 12; -fx-padding: 10;");
-        refreshButton.setOnAction(event -> {
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        refreshButton.setMaximumSize(new Dimension(180, 40));
+        refreshButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        refreshButton.setBackground(new Color(52, 73, 94));
+        refreshButton.setForeground(Color.WHITE);
+        refreshButton.setBorderPainted(false);
+        refreshButton.setFocusPainted(false);
+        refreshButton.addActionListener(e -> {
             employeeListView.refresh();
             dashboardView.refresh();
         });
 
-        // Exit button
-        Button exitButton = new Button("Exit");
-        exitButton.setPrefWidth(170);
-        exitButton.setStyle("-fx-font-size: 12; -fx-padding: 10; -fx-background-color: #e74c3c;");
-        exitButton.setOnAction(event -> primaryStage.close());
+        JButton exitButton = new JButton("Exit");
+        exitButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        exitButton.setMaximumSize(new Dimension(180, 40));
+        exitButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        exitButton.setBackground(new Color(231, 76, 60));
+        exitButton.setForeground(Color.WHITE);
+        exitButton.setBorderPainted(false);
+        exitButton.setFocusPainted(false);
+        exitButton.addActionListener(e -> dispose());
 
-        sidebar.getChildren().addAll(
-                headerBox,
-                dashboardButton,
-                employeeListButton,
-                addEmployeeButton,
-                refreshButton,
-                new Separator(javafx.geometry.Orientation.HORIZONTAL),
-                exitButton
-        );
+        // Add components to sidebar
+        sidebar.add(headerBox);
+        sidebar.add(Box.createVerticalStrut(10));
+        sidebar.add(dashboardButton);
+        sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(employeeListButton);
+        sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(addEmployeeButton);
+        sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(refreshButton);
+        sidebar.add(Box.createVerticalStrut(20));
+        sidebar.add(new JSeparator());
+        sidebar.add(Box.createVerticalStrut(20));
+        sidebar.add(exitButton);
+        sidebar.add(Box.createVerticalGlue());
 
         return sidebar;
     }
@@ -138,8 +178,11 @@ public class EmployeeManagementApp extends Application {
     /**
      * Switch to a different view
      */
-    private void switchToView(VBox view, Object viewObject) {
-        mainLayout.setCenter(view);
+    private void switchToView(JPanel view, Object viewObject) {
+        contentPanel.removeAll();
+        contentPanel.add(view, BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
         
         // Refresh the view if applicable
         if (viewObject instanceof DashboardView) {
@@ -154,7 +197,7 @@ public class EmployeeManagementApp extends Application {
      */
     private void openAddEmployeeForm() {
         try {
-            AddEmployeeForm addForm = new AddEmployeeForm(employeeService);
+            AddEmployeeForm addForm = new AddEmployeeForm(this, employeeService);
             addForm.setOnSuccessCallback(() -> {
                 employeeListView.refresh();
                 dashboardView.refresh();
@@ -173,12 +216,17 @@ public class EmployeeManagementApp extends Application {
             // Close Hibernate session factory
             HibernateUtil.closeSessionFactory();
             logger.info("EIMS Application closed successfully");
+            System.exit(0);
         } catch (Exception e) {
             logger.error("Error closing application", e);
+            System.exit(1);
         }
     }
 
     public static void main(String[] args) {
-        launch(args);
+        SwingUtilities.invokeLater(() -> {
+            EmployeeManagementApp frame = new EmployeeManagementApp();
+            frame.setVisible(true);
+        });
     }
 }

@@ -5,30 +5,27 @@ import com.yourname.myapp.entity.EmploymentStatus;
 import com.yourname.myapp.exception.EmployeeNotFoundException;
 import com.yourname.myapp.service.EmployeeService;
 import com.yourname.myapp.ui.util.DialogUtil;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.util.List;
 
 /**
- * Employee List view with filtering capabilities.
+ * Employee List view with filtering capabilities (Swing version).
  */
 public class EmployeeListView {
     private static final Logger logger = LoggerFactory.getLogger(EmployeeListView.class);
     private final EmployeeService employeeService;
-    private VBox rootPane;
-    private TableView<Employee> employeeTable;
-    private ComboBox<String> departmentFilter;
-    private ComboBox<EmploymentStatus> statusFilter;
-    private TextField searchField;
+    private JPanel rootPane;
+    private JTable employeeTable;
+    private JComboBox<String> departmentFilter;
+    private JComboBox<EmploymentStatus> statusFilter;
+    private JTextField searchField;
     private Runnable onRefreshCallback;
     private Runnable onEditCallback;
     private Runnable onDeleteCallback;
@@ -42,121 +39,117 @@ public class EmployeeListView {
      * Initialize the employee list UI
      */
     private void initializeUI() {
-        rootPane = new VBox(10);
-        rootPane.setPadding(new Insets(20));
-        rootPane.setStyle("-fx-background-color: #f5f5f5;");
+        rootPane = new JPanel(new BorderLayout(10, 10));
+        rootPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        rootPane.setBackground(new Color(245, 245, 245));
 
         // Title
-        Label titleLabel = new Label("Employee List");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        rootPane.getChildren().add(titleLabel);
+        JLabel titleLabel = new JLabel("Employee List");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        rootPane.add(titleLabel, BorderLayout.NORTH);
 
         // Filter bar
-        HBox filterBar = createFilterBar();
-        rootPane.getChildren().add(filterBar);
+        JPanel filterBar = createFilterBar();
+        rootPane.add(filterBar, BorderLayout.PAGE_START);
 
         // Employee table
         employeeTable = createEmployeeTable();
-        ScrollPane scrollPane = new ScrollPane(employeeTable);
-        scrollPane.setFitToWidth(true);
-        rootPane.getChildren().add(scrollPane);
+        JScrollPane scrollPane = new JScrollPane(employeeTable);
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
+        rootPane.add(tablePanel, BorderLayout.CENTER);
 
         // Button bar
-        HBox buttonBar = createButtonBar();
-        rootPane.getChildren().add(buttonBar);
+        JPanel buttonBar = createButtonBar();
+        rootPane.add(buttonBar, BorderLayout.SOUTH);
 
         // Load initial data
         loadEmployees();
     }
 
     /**
-     * Create the filter bar with department and status filters
+     * Create the filter bar
      */
-    private HBox createFilterBar() {
-        HBox filterBar = new HBox(15);
-        filterBar.setPadding(new Insets(10));
-        filterBar.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 1;");
+    private JPanel createFilterBar() {
+        JPanel filterBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
+        filterBar.setBackground(Color.WHITE);
+        filterBar.setBorder(BorderFactory.createLineBorder(new Color(221, 221, 221)));
 
         // Search field
-        Label searchLabel = new Label("Search:");
-        searchField = new TextField();
-        searchField.setPromptText("Enter employee name...");
-        searchField.setPrefWidth(200);
-        searchField.setOnKeyReleased(event -> {
-            if (searchField.getText().isEmpty()) {
-                loadEmployees();
-            } else {
-                searchEmployees(searchField.getText());
+        JLabel searchLabel = new JLabel("Search:");
+        searchField = new JTextField(20);
+        searchField.setToolTipText("Enter employee name...");
+        searchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                if (searchField.getText().isEmpty()) {
+                    loadEmployees();
+                } else {
+                    searchEmployees(searchField.getText());
+                }
             }
         });
 
         // Department filter
-        Label deptLabel = new Label("Department:");
-        departmentFilter = new ComboBox<>();
-        departmentFilter.setPrefWidth(150);
-        departmentFilter.setPromptText("All Departments");
-        departmentFilter.getItems().add("All Departments");
-        departmentFilter.getItems().addAll(employeeService.getAllDepartments());
-        departmentFilter.setValue("All Departments");
-        departmentFilter.setOnAction(event -> applyFilters());
+        JLabel deptLabel = new JLabel("Department:");
+        departmentFilter = new JComboBox<>();
+        departmentFilter.addItem("All Departments");
+        List<String> departments = employeeService.getAllDepartments();
+        for (String dept : departments) {
+            departmentFilter.addItem(dept);
+        }
+        departmentFilter.addActionListener(e -> applyFilters());
 
         // Status filter
-        Label statusLabel = new Label("Status:");
-        statusFilter = new ComboBox<>();
-        statusFilter.setPrefWidth(150);
-        statusFilter.setPromptText("All Status");
-        statusFilter.getItems().add(null);
-        statusFilter.getItems().addAll(EmploymentStatus.values());
-        statusFilter.setOnAction(event -> applyFilters());
+        JLabel statusLabel = new JLabel("Status:");
+        statusFilter = new JComboBox<>();
+        statusFilter.addItem(null);
+        for (EmploymentStatus status : EmploymentStatus.values()) {
+            statusFilter.addItem(status);
+        }
+        statusFilter.addActionListener(e -> applyFilters());
 
-        // Refresh button
-        Button refreshButton = new Button("Refresh");
-        refreshButton.setPrefWidth(100);
-        refreshButton.setOnAction(event -> loadEmployees());
+        // Buttons
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(e -> loadEmployees());
 
-        // Clear filters button
-        Button clearButton = new Button("Clear Filters");
-        clearButton.setPrefWidth(100);
-        clearButton.setOnAction(event -> clearFilters());
+        JButton clearButton = new JButton("Clear Filters");
+        clearButton.addActionListener(e -> clearFilters());
 
-        filterBar.getChildren().addAll(
-                searchLabel, searchField,
-                new Separator(javafx.geometry.Orientation.VERTICAL),
-                deptLabel, departmentFilter,
-                statusLabel, statusFilter,
-                new Separator(javafx.geometry.Orientation.VERTICAL),
-                refreshButton, clearButton
-        );
+        filterBar.add(searchLabel);
+        filterBar.add(searchField);
+        filterBar.add(new JSeparator(SwingConstants.VERTICAL));
+        filterBar.add(deptLabel);
+        filterBar.add(departmentFilter);
+        filterBar.add(statusLabel);
+        filterBar.add(statusFilter);
+        filterBar.add(new JSeparator(SwingConstants.VERTICAL));
+        filterBar.add(refreshButton);
+        filterBar.add(clearButton);
 
         return filterBar;
     }
 
     /**
-     * Create the employee table with columns
+     * Create the employee table
      */
-    private TableView<Employee> createEmployeeTable() {
-        TableView<Employee> table = new TableView<>();
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    private JTable createEmployeeTable() {
+        DefaultTableModel model = new DefaultTableModel(
+                new String[]{"Employee ID", "Name", "Department", "Job Role", "Status"},
+                0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
-        TableColumn<Employee, String> idColumn = new TableColumn<>("Employee ID");
-        idColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEmployeeId()));
-
-        TableColumn<Employee, String> nameColumn = new TableColumn<>("Name");
-        nameColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getEmployeeName()));
-
-        TableColumn<Employee, String> departmentColumn = new TableColumn<>("Department");
-        departmentColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDepartment()));
-
-        TableColumn<Employee, String> jobRoleColumn = new TableColumn<>("Job Role");
-        jobRoleColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getJobRole()));
-
-        TableColumn<Employee, String> statusColumn = new TableColumn<>("Status");
-        statusColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getEmploymentStatus().toString()
-        ));
-
-        table.getColumns().addAll(idColumn, nameColumn, departmentColumn, jobRoleColumn, statusColumn);
-        table.setPrefHeight(400);
+        JTable table = new JTable(model);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.getColumnModel().getColumn(0).setPreferredWidth(120);
+        table.getColumnModel().getColumn(1).setPreferredWidth(150);
+        table.getColumnModel().getColumn(2).setPreferredWidth(120);
+        table.getColumnModel().getColumn(3).setPreferredWidth(120);
+        table.getColumnModel().getColumn(4).setPreferredWidth(100);
 
         return table;
     }
@@ -164,15 +157,14 @@ public class EmployeeListView {
     /**
      * Create the action button bar
      */
-    private HBox createButtonBar() {
-        HBox buttonBar = new HBox(10);
-        buttonBar.setPadding(new Insets(10));
-        buttonBar.setStyle("-fx-background-color: white; -fx-border-color: #ddd; -fx-border-width: 1;");
+    private JPanel createButtonBar() {
+        JPanel buttonBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        buttonBar.setBackground(Color.WHITE);
+        buttonBar.setBorder(BorderFactory.createLineBorder(new Color(221, 221, 221)));
 
-        Button editButton = new Button("Edit");
-        editButton.setPrefWidth(100);
-        editButton.setOnAction(event -> {
-            Employee selected = employeeTable.getSelectionModel().getSelectedItem();
+        JButton editButton = new JButton("Edit");
+        editButton.addActionListener(e -> {
+            Employee selected = getSelectedEmployee();
             if (selected != null) {
                 if (onEditCallback != null) {
                     onEditCallback.run();
@@ -182,11 +174,11 @@ public class EmployeeListView {
             }
         });
 
-        Button deleteButton = new Button("Delete");
-        deleteButton.setPrefWidth(100);
-        deleteButton.setStyle("-fx-text-fill: white; -fx-background-color: #e74c3c;");
-        deleteButton.setOnAction(event -> {
-            Employee selected = employeeTable.getSelectionModel().getSelectedItem();
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.setBackground(new Color(231, 76, 60));
+        deleteButton.setForeground(Color.WHITE);
+        deleteButton.addActionListener(e -> {
+            Employee selected = getSelectedEmployee();
             if (selected != null) {
                 if (DialogUtil.showConfirmation("Confirm Delete", "Delete Employee",
                         "Are you sure you want to delete " + selected.getEmployeeName() + "?")) {
@@ -197,7 +189,9 @@ public class EmployeeListView {
             }
         });
 
-        buttonBar.getChildren().addAll(editButton, deleteButton);
+        buttonBar.add(editButton);
+        buttonBar.add(deleteButton);
+
         return buttonBar;
     }
 
@@ -207,8 +201,18 @@ public class EmployeeListView {
     public void loadEmployees() {
         try {
             List<Employee> employees = employeeService.getAllEmployees();
-            ObservableList<Employee> observableList = FXCollections.observableArrayList(employees);
-            employeeTable.setItems(observableList);
+            DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
+            model.setRowCount(0);
+
+            for (Employee emp : employees) {
+                model.addRow(new Object[]{
+                        emp.getEmployeeId(),
+                        emp.getEmployeeName(),
+                        emp.getDepartment(),
+                        emp.getJobRole(),
+                        emp.getEmploymentStatus()
+                });
+            }
             logger.info("Loaded {} employees", employees.size());
         } catch (Exception e) {
             logger.error("Error loading employees", e);
@@ -217,20 +221,29 @@ public class EmployeeListView {
     }
 
     /**
-     * Apply department and status filters
+     * Apply filters
      */
     private void applyFilters() {
         try {
-            String department = departmentFilter.getValue();
-            EmploymentStatus status = statusFilter.getValue();
+            String department = (String) departmentFilter.getSelectedItem();
+            EmploymentStatus status = (EmploymentStatus) statusFilter.getSelectedItem();
 
             String deptFilter = (department != null && !department.equals("All Departments")) ? department : null;
             String statusFilter = (status != null) ? status.toString() : null;
 
             List<Employee> employees = employeeService.getAllEmployees(deptFilter, statusFilter);
-            ObservableList<Employee> observableList = FXCollections.observableArrayList(employees);
-            employeeTable.setItems(observableList);
-            logger.info("Applied filters - Department: {}, Status: {}", deptFilter, statusFilter);
+            DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
+            model.setRowCount(0);
+
+            for (Employee emp : employees) {
+                model.addRow(new Object[]{
+                        emp.getEmployeeId(),
+                        emp.getEmployeeName(),
+                        emp.getDepartment(),
+                        emp.getJobRole(),
+                        emp.getEmploymentStatus()
+                });
+            }
         } catch (Exception e) {
             logger.error("Error applying filters", e);
             DialogUtil.showError("Filter Error", "Failed to apply filters", e.getMessage());
@@ -238,14 +251,23 @@ public class EmployeeListView {
     }
 
     /**
-     * Search for employees by name
+     * Search employees by name
      */
     private void searchEmployees(String searchTerm) {
         try {
             List<Employee> employees = employeeService.searchByName(searchTerm);
-            ObservableList<Employee> observableList = FXCollections.observableArrayList(employees);
-            employeeTable.setItems(observableList);
-            logger.info("Search results: {} employees found", employees.size());
+            DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
+            model.setRowCount(0);
+
+            for (Employee emp : employees) {
+                model.addRow(new Object[]{
+                        emp.getEmployeeId(),
+                        emp.getEmployeeName(),
+                        emp.getDepartment(),
+                        emp.getJobRole(),
+                        emp.getEmploymentStatus()
+                });
+            }
         } catch (Exception e) {
             logger.error("Error searching employees", e);
             DialogUtil.showError("Search Error", "Failed to search employees", e.getMessage());
@@ -253,12 +275,12 @@ public class EmployeeListView {
     }
 
     /**
-     * Clear all filters and reload
+     * Clear all filters
      */
     private void clearFilters() {
-        searchField.clear();
-        departmentFilter.setValue("All Departments");
-        statusFilter.setValue(null);
+        searchField.setText("");
+        departmentFilter.setSelectedIndex(0);
+        statusFilter.setSelectedIndex(0);
         loadEmployees();
     }
 
@@ -282,10 +304,16 @@ public class EmployeeListView {
     }
 
     /**
-     * Get selected employee
+     * Get selected employee from table
      */
     public Employee getSelectedEmployee() {
-        return employeeTable.getSelectionModel().getSelectedItem();
+        int selectedRow = employeeTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            DefaultTableModel model = (DefaultTableModel) employeeTable.getModel();
+            String employeeId = (String) model.getValueAt(selectedRow, 0);
+            return employeeService.getEmployeeById(employeeId);
+        }
+        return null;
     }
 
     /**
@@ -303,9 +331,9 @@ public class EmployeeListView {
     }
 
     /**
-     * Get the root pane of this view
+     * Get the root pane
      */
-    public VBox getRootPane() {
+    public JPanel getRootPane() {
         return rootPane;
     }
 
