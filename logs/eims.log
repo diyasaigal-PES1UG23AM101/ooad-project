@@ -1,0 +1,83 @@
+10:12:30.590 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+10:12:31.559 [JavaFX Application Thread] INFO  SQL dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+10:12:31.562 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+10:12:34.084 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=0, activeEmployeeCount=0, newJoinersCount=0, onLeaveCount=0}
+10:12:34.117 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:12:34.220 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 0 employees
+10:12:34.735 [JavaFX Application Thread] INFO  c.y.myapp.EmployeeManagementApp - EIMS Application started successfully
+10:12:39.862 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=0, activeEmployeeCount=0, newJoinersCount=0, onLeaveCount=0}
+10:12:39.865 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:12:41.270 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 0 employees
+10:13:03.771 [JavaFX Application Thread] INFO  c.y.m.r.EmployeeRepositoryImpl - Employee saved: EMP-F75C4488
+10:13:03.772 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Employee created successfully: EMP-F75C4488
+10:13:05.592 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:13:05.630 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:13:05.632 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:13:05.659 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.AddEmployeeForm - Employee created successfully
+10:13:08.365 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:13:08.397 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:13:08.398 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:13:10.034 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:13:11.667 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:13:11.669 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:13:13.963 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:13:13.966 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:13:15.454 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:13:15.485 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:13:15.486 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:13:16.411 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:13:17.901 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:13:17.902 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:13:20.251 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:13:20.252 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:13:24.601 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:13:24.635 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:13:24.636 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:13:25.696 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:13:26.866 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:13:26.867 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:13:28.099 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:13:31.698 [JavaFX Application Thread] INFO  c.y.myapp.EmployeeManagementApp - EIMS Application closed successfully
+10:13:45.778 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+10:13:46.693 [JavaFX Application Thread] INFO  SQL dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+10:13:46.698 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+10:13:49.412 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:13:49.428 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:13:49.568 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:13:50.121 [JavaFX Application Thread] INFO  c.y.myapp.EmployeeManagementApp - EIMS Application started successfully
+10:13:59.447 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:14:03.347 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:14:03.348 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:14:06.929 [JavaFX Application Thread] INFO  c.y.myapp.EmployeeManagementApp - EIMS Application closed successfully
+10:17:23.587 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+10:17:24.453 [JavaFX Application Thread] INFO  SQL dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+10:17:24.456 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+10:17:26.924 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:17:26.937 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:17:27.048 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:17:27.521 [JavaFX Application Thread] INFO  c.y.myapp.EmployeeManagementApp - EIMS Application started successfully
+10:17:30.310 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:17:32.236 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:17:32.238 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:18:50.868 [JavaFX Application Thread] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+10:18:51.789 [JavaFX Application Thread] INFO  SQL dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+10:18:51.793 [JavaFX Application Thread] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+10:18:54.244 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:18:54.257 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:18:54.365 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:18:54.849 [JavaFX Application Thread] INFO  c.y.myapp.EmployeeManagementApp - EIMS Application started successfully
+10:18:57.938 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:18:59.849 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:18:59.850 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:19:01.532 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+10:19:01.562 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+10:19:01.564 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:19:24.622 [JavaFX Application Thread] INFO  c.y.m.r.EmployeeRepositoryImpl - Employee saved: EMP-2200B6FB
+10:19:24.623 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Employee created successfully: EMP-2200B6FB
+10:19:26.459 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 2 employees
+10:19:26.495 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=2, activeEmployeeCount=2, newJoinersCount=2, onLeaveCount=0}
+10:19:26.498 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+10:19:26.545 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.AddEmployeeForm - Employee created successfully
+10:19:28.294 [JavaFX Application Thread] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 2 employees
+10:19:36.263 [JavaFX Application Thread] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=2, activeEmployeeCount=2, newJoinersCount=2, onLeaveCount=0}
+10:19:36.266 [JavaFX Application Thread] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
