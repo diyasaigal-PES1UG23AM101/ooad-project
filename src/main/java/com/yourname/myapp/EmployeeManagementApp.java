@@ -7,6 +7,7 @@ import com.yourname.myapp.ui.*;
 import com.yourname.myapp.recruitment.ui.CandidateListView;
 import com.yourname.myapp.recruitment.ui.RecruitmentDashboardView;
 import com.yourname.myapp.ui.attendance.AttendanceLeaveMainView;
+import com.yourname.myapp.ui.benefits.BenefitsMainView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,7 @@ public class EmployeeManagementApp extends JFrame {
 
     // Recruitment module views
     private AttendanceLeaveMainView attendanceLeaveMainView;
+    private BenefitsMainView benefitsMainView;  
     private CandidateListView candidateListView;
     private RecruitmentDashboardView recruitmentDashboardView;
 
@@ -63,6 +65,7 @@ public class EmployeeManagementApp extends JFrame {
             candidateListView = new CandidateListView();
             recruitmentDashboardView = new RecruitmentDashboardView();
             attendanceLeaveMainView = new AttendanceLeaveMainView();
+            benefitsMainView = new BenefitsMainView();
 
             // Set initial view (Dashboard)
             switchToView(dashboardView.getRootPane(), dashboardView);
@@ -177,6 +180,18 @@ public class EmployeeManagementApp extends JFrame {
         attendanceButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         attendanceButton.addActionListener(e -> switchToView(attendanceLeaveMainView, attendanceLeaveMainView));
 
+        JButton benefitsButton = new JButton("Benefits Admin");
+        benefitsButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        benefitsButton.setMaximumSize(new Dimension(180, 40));
+        benefitsButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        benefitsButton.setBackground(new Color(52, 73, 94));
+        benefitsButton.setForeground(Color.WHITE);
+        benefitsButton.setBorderPainted(false);
+        benefitsButton.setFocusPainted(false);
+        benefitsButton.setOpaque(true);
+        benefitsButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        benefitsButton.addActionListener(e -> switchToView(benefitsMainView, benefitsMainView));
+
         JButton addEmployeeButton = new JButton("Add Employee");
         addEmployeeButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         addEmployeeButton.setMaximumSize(new Dimension(180, 40));
@@ -231,6 +246,8 @@ public class EmployeeManagementApp extends JFrame {
         sidebar.add(candidateListButton);
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(attendanceButton);
+        sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(benefitsButton);
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(addEmployeeButton);
         sidebar.add(Box.createVerticalStrut(5));
