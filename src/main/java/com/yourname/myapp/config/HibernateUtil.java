@@ -8,7 +8,8 @@ import org.hibernate.cfg.Configuration;
 import com.yourname.myapp.entity.AttendanceRecord;
 import com.yourname.myapp.entity.LeaveRequest;
 import com.yourname.myapp.entity.LeaveBalance;
-
+import com.yourname.myapp.entity.BenefitEnrollment;
+import com.yourname.myapp.entity.Claim;
 /**
  * Utility class for Hibernate SessionFactory and session management.
  * 
@@ -116,6 +117,8 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(AttendanceRecord.class);
             configuration.addAnnotatedClass(LeaveRequest.class);
             configuration.addAnnotatedClass(LeaveBalance.class);
+            configuration.addAnnotatedClass(BenefitEnrollment.class);
+            configuration.addAnnotatedClass(Claim.class);
             
             // Build SessionFactory from configuration
             sessionFactory = configuration.buildSessionFactory();

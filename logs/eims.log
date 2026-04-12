@@ -9,3 +9,14 @@
 11:57:19.044 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=0, activeEmployeeCount=0, newJoinersCount=0, onLeaveCount=0}
 11:57:19.046 [AWT-EventQueue-0] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
 11:57:19.049 [AWT-EventQueue-0] INFO  c.y.myapp.EmployeeManagementApp - EIMS Application started successfully
+12:43:45.341 [AWT-EventQueue-0] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+12:43:46.487 [AWT-EventQueue-0] INFO  SQL dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+12:43:46.491 [AWT-EventQueue-0] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+12:43:49.830 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=0, activeEmployeeCount=0, newJoinersCount=0, onLeaveCount=0}
+12:43:49.837 [AWT-EventQueue-0] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+12:43:50.182 [AWT-EventQueue-0] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 0 employees
+12:43:50.214 [AWT-EventQueue-0] INFO  c.y.m.r.ui.CandidateListView - Loaded 0 candidates
+12:43:50.235 [AWT-EventQueue-0] INFO  c.y.m.r.ui.RecruitmentDashboardView - Recruitment dashboard loaded successfully
+12:43:50.469 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=0, activeEmployeeCount=0, newJoinersCount=0, onLeaveCount=0}
+12:43:50.471 [AWT-EventQueue-0] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+12:43:50.474 [AWT-EventQueue-0] INFO  c.y.myapp.EmployeeManagementApp - EIMS Application started successfully
