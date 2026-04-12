@@ -6,6 +6,7 @@ import com.yourname.myapp.ui.*;
 
 import com.yourname.myapp.recruitment.ui.CandidateListView;
 import com.yourname.myapp.recruitment.ui.RecruitmentDashboardView;
+import com.yourname.myapp.ui.attendance.AttendanceLeaveMainView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,7 @@ public class EmployeeManagementApp extends JFrame {
     private DashboardView dashboardView;
 
     // Recruitment module views
+    private AttendanceLeaveMainView attendanceLeaveMainView;
     private CandidateListView candidateListView;
     private RecruitmentDashboardView recruitmentDashboardView;
 
@@ -60,6 +62,7 @@ public class EmployeeManagementApp extends JFrame {
             employeeListView = new EmployeeListView(employeeService);
             candidateListView = new CandidateListView();
             recruitmentDashboardView = new RecruitmentDashboardView();
+            attendanceLeaveMainView = new AttendanceLeaveMainView();
 
             // Set initial view (Dashboard)
             switchToView(dashboardView.getRootPane(), dashboardView);
@@ -162,6 +165,18 @@ public class EmployeeManagementApp extends JFrame {
         candidateListButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         candidateListButton.addActionListener(e -> switchToView(candidateListView.getRootPane(), candidateListView));
 
+        JButton attendanceButton = new JButton("Attendance & Leave");
+        attendanceButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        attendanceButton.setMaximumSize(new Dimension(180, 40));
+        attendanceButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        attendanceButton.setBackground(new Color(52, 73, 94));
+        attendanceButton.setForeground(Color.WHITE);
+        attendanceButton.setBorderPainted(false);
+        attendanceButton.setFocusPainted(false);
+        attendanceButton.setOpaque(true);
+        attendanceButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        attendanceButton.addActionListener(e -> switchToView(attendanceLeaveMainView, attendanceLeaveMainView));
+
         JButton addEmployeeButton = new JButton("Add Employee");
         addEmployeeButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         addEmployeeButton.setMaximumSize(new Dimension(180, 40));
@@ -214,6 +229,8 @@ public class EmployeeManagementApp extends JFrame {
         sidebar.add(recruitmentDashboardButton);
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(candidateListButton);
+        sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(attendanceButton);
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(addEmployeeButton);
         sidebar.add(Box.createVerticalStrut(5));

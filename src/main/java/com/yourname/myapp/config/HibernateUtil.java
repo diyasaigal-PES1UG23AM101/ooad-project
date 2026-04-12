@@ -5,6 +5,9 @@ import com.yourname.myapp.recruitment.entity.Candidate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import com.yourname.myapp.entity.AttendanceRecord;
+import com.yourname.myapp.entity.LeaveRequest;
+import com.yourname.myapp.entity.LeaveBalance;
 
 /**
  * Utility class for Hibernate SessionFactory and session management.
@@ -78,7 +81,7 @@ public class HibernateUtil {
             // ========================================================================
             String dbUrl = System.getenv("DB_URL") != null ? System.getenv("DB_URL") : "jdbc:mysql://localhost:3306/eims_db";
             String dbUsername = System.getenv("DB_USERNAME") != null ? System.getenv("DB_USERNAME") : "root";
-            String dbPassword = System.getenv("DB_PASSWORD") != null ? System.getenv("DB_PASSWORD") : "Mi8105119@!!@";
+            String dbPassword = System.getenv("DB_PASSWORD") != null ? System.getenv("DB_PASSWORD") : "Root1231";
             
             // JDBC Driver Configuration
             configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
@@ -110,6 +113,9 @@ public class HibernateUtil {
             // ========================================================================
             configuration.addAnnotatedClass(Employee.class);
             configuration.addAnnotatedClass(Candidate.class);
+            configuration.addAnnotatedClass(AttendanceRecord.class);
+            configuration.addAnnotatedClass(LeaveRequest.class);
+            configuration.addAnnotatedClass(LeaveBalance.class);
             
             // Build SessionFactory from configuration
             sessionFactory = configuration.buildSessionFactory();
