@@ -4,15 +4,11 @@ import com.yourname.myapp.recruitment.entity.Candidate;
 import com.yourname.myapp.recruitment.repository.CandidateRepository;
 import com.yourname.myapp.recruitment.repository.CandidateRepositoryImpl;
 
-import com.yourname.myapp.entity.Employee;
-import com.yourname.myapp.service.EmployeeService;
-
 import com.yourname.myapp.onboarding.command.*;
 import com.yourname.myapp.onboarding.entity.OnboardingRecord;
 import com.yourname.myapp.onboarding.repository.OnboardingRepository;
 import com.yourname.myapp.onboarding.repository.OnboardingRepositoryImpl;
 
-// 🔥 ADDED
 import com.yourname.myapp.onboarding.exception.*;
 
 import java.util.*;
@@ -23,7 +19,6 @@ public class OnboardingServiceImpl implements OnboardingService {
     private final CommandInvoker invoker = new CommandInvoker();
 
     private final CandidateRepository candidateRepository = new CandidateRepositoryImpl();
-    private final EmployeeService employeeService = new EmployeeService();
 
     @Override
     public List<OnboardingRecord> getAllRecords() {
@@ -52,19 +47,8 @@ public class OnboardingServiceImpl implements OnboardingService {
             throw new RuntimeException("Candidate does not exist with ID: " + candidateId);
         }
 
-        // 🔥 existing rule (UNCHANGED)
         if (candidate.getApplicationStatus() != Candidate.ApplicationStatus.SELECTED) {
-            throw new IllegalStateException(
-                "Only SELECTED candidates can be moved to onboarding"
-            );
-        }
-
-        // 🆕 ADDED: duplicate onboarding check
-        boolean exists = repository.findAll().stream()
-                .anyMatch(r -> r.getAssignedEmployeeId().equals(candidateId));
-
-        if (exists) {
-            throw new DuplicateCandidateOnboardingException(candidateId);
+            throw new IllegalStateException("Only SELECTED candidates can be onboarded");
         }
 
         OnboardingRecord record = new OnboardingRecord();
@@ -80,10 +64,7 @@ public class OnboardingServiceImpl implements OnboardingService {
         record.setDocumentVerificationStatus(OnboardingRecord.DocumentVerificationStatus.PENDING);
         record.setVerifiedRecord(false);
 
-        record.addActivity("Onboarding started from candidate: " + candidate.getCandidateName());
-
         repository.save(record);
-
         return record;
     }
 
@@ -93,16 +74,15 @@ public class OnboardingServiceImpl implements OnboardingService {
         OnboardingRecord record = getById(id);
 
         if (record.isVerifiedRecord()) {
-            throw new InvalidCandidateOnboardingStateException(
-                "Cannot update background check after verification"
-            );
+            throw new InvalidCandidateOnboardingStateException("Already finalized");
         }
 
-        OnboardingRecord.BackgroundCheckStatus newStatus =
-                OnboardingRecord.BackgroundCheckStatus.valueOf(status);
-
         invoker.executeCommand(
-                new UpdateBackgroundCheckCommand(record, newStatus, repository)
+                new UpdateBackgroundCheckCommand(
+                        record,
+                        OnboardingRecord.BackgroundCheckStatus.valueOf(status),
+                        repository
+                )
         );
     }
 
@@ -112,16 +92,15 @@ public class OnboardingServiceImpl implements OnboardingService {
         OnboardingRecord record = getById(id);
 
         if (record.isVerifiedRecord()) {
-            throw new InvalidCandidateOnboardingStateException(
-                "Cannot update document verification after verification"
-            );
+            throw new InvalidCandidateOnboardingStateException("Already finalized");
         }
 
-        OnboardingRecord.DocumentVerificationStatus newStatus =
-                OnboardingRecord.DocumentVerificationStatus.valueOf(status);
-
         invoker.executeCommand(
-                new UpdateDocumentVerificationCommand(record, newStatus, repository)
+                new UpdateDocumentVerificationCommand(
+                        record,
+                        OnboardingRecord.DocumentVerificationStatus.valueOf(status),
+                        repository
+                )
         );
     }
 
@@ -130,8 +109,9 @@ public class OnboardingServiceImpl implements OnboardingService {
 
         OnboardingRecord record = getById(id);
 
-        // 🆕 ADDED: prevent re-approval
-        if (record.isVerifiedRecord()) {
+        // 🚨 FIX: block only final ACTIVE state, not VERIFIED
+        if (record.getPipelineStatus() ==
+                OnboardingRecord.PipelineStatus.ACTIVE_ONBOARDING) {
             throw new OnboardingAlreadyVerifiedException(id);
         }
 
@@ -139,17 +119,24 @@ public class OnboardingServiceImpl implements OnboardingService {
                 new ApproveOnboardingCommand(record, repository)
         );
 
-        Candidate candidate = candidateRepository.findById(record.getAssignedEmployeeId());
+        // 👇 Employee creation ONLY after ACTIVE
+        if (record.getPipelineStatus() ==
+                OnboardingRecord.PipelineStatus.ACTIVE_ONBOARDING) {
 
-        if (candidate != null) {
-            com.yourname.myapp.dto.EmployeeRequest req =
-                    new com.yourname.myapp.dto.EmployeeRequest();
+            Candidate candidate =
+                    candidateRepository.findById(record.getAssignedEmployeeId());
 
-            req.setEmployeeName(candidate.getCandidateName());
-            req.setDepartment("DEFAULT");
-            req.setJobRole("NEW_JOINER");
+            if (candidate != null) {
+                com.yourname.myapp.dto.EmployeeRequest req =
+                        new com.yourname.myapp.dto.EmployeeRequest();
 
-            employeeService.createEmployee(req);
+                req.setEmployeeName(candidate.getCandidateName());
+                req.setDepartment("DEFAULT");
+                req.setJobRole("NEW_JOINER");
+
+                new com.yourname.myapp.service.EmployeeService()
+                        .createEmployee(req);
+            }
         }
     }
 
@@ -167,15 +154,18 @@ public class OnboardingServiceImpl implements OnboardingService {
         long total = records.size();
 
         long active = records.stream()
-                .filter(r -> r.getPipelineStatus() == OnboardingRecord.PipelineStatus.ACTIVE_ONBOARDING)
+                .filter(r -> r.getPipelineStatus()
+                        == OnboardingRecord.PipelineStatus.ACTIVE_ONBOARDING)
                 .count();
 
         long verified = records.stream()
-                .filter(r -> r.getPipelineStatus() == OnboardingRecord.PipelineStatus.VERIFIED)
+                .filter(r -> r.getPipelineStatus()
+                        == OnboardingRecord.PipelineStatus.VERIFIED)
                 .count();
 
         long pending = records.stream()
-                .filter(r -> r.getPipelineStatus() == OnboardingRecord.PipelineStatus.EMPLOYEE_ASSIGNED)
+                .filter(r -> r.getPipelineStatus()
+                        == OnboardingRecord.PipelineStatus.EMPLOYEE_ASSIGNED)
                 .count();
 
         Map<String, Object> stats = new HashMap<>();

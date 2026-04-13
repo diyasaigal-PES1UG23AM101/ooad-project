@@ -29,8 +29,8 @@ public class OnboardingDashboardView {
 
         JLabel title = new JLabel("Onboarding Dashboard");
         title.setFont(new Font("Arial", Font.BOLD, 24));
-        rootPane.add(title, BorderLayout.NORTH);
 
+        rootPane.add(title, BorderLayout.NORTH);
         rootPane.add(createStatsPanel(), BorderLayout.NORTH);
         rootPane.add(createTablePanel(), BorderLayout.CENTER);
         rootPane.add(createButtonBar(), BorderLayout.SOUTH);
@@ -69,7 +69,10 @@ public class OnboardingDashboardView {
     private JPanel createTablePanel() {
 
         tableModel = new DefaultTableModel(
-                new String[]{"ID", "Candidate ID", "Name", "Background Verification Status", "Document Verification Status", "Verified", "Pipeline"}, 0
+                new String[]{"ID", "Candidate ID", "Name",
+                        "Background Verification Status",
+                        "Document Verification Status",
+                        "Verified", "Pipeline"}, 0
         );
 
         table = new JTable(tableModel);
@@ -101,7 +104,6 @@ public class OnboardingDashboardView {
             });
         }
 
-        // ✅ FORCE UI REFRESH
         tableModel.fireTableDataChanged();
     }
 
@@ -138,12 +140,20 @@ public class OnboardingDashboardView {
         approve.addActionListener(e -> {
 
             int row = table.getSelectedRow();
-            if (row == -1) return;
+            if (row == -1) {
+                JOptionPane.showMessageDialog(rootPane, "Select a record first");
+                return;
+            }
 
             String id = (String) tableModel.getValueAt(row, 0);
 
-            onboardingService.approveOnboarding(id);
-            loadRecords(); // ✅ instant refresh fix
+            try {
+                onboardingService.approveOnboarding(id);
+                loadRecords(); // ✅ ONLY runs on success
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Approval Failed: " + ex.getMessage());
+            }
         });
 
         JButton delete = new JButton("Delete Record");
@@ -155,7 +165,7 @@ public class OnboardingDashboardView {
             String id = (String) tableModel.getValueAt(row, 0);
 
             onboardingService.deleteRecord(id);
-            loadRecords(); // ✅ instant refresh fix
+            loadRecords();
         });
 
         JButton refresh = new JButton("Refresh");
