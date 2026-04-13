@@ -622,3 +622,36 @@ java.lang.IllegalStateException: Cannot get a connection as the driver manager i
 22:51:24.822 [AWT-EventQueue-0] INFO  c.y.m.r.ui.RecruitmentDashboardView - Recruitment dashboard loaded successfully
 22:51:25.388 [AWT-EventQueue-0] INFO  c.y.m.r.ui.CandidateListView - Loaded 6 candidates
 22:51:26.587 [AWT-EventQueue-0] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 7 employees
+23:11:57.649 [AWT-EventQueue-0] WARN  o.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+23:11:58.583 [AWT-EventQueue-0] INFO  SQL dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+23:11:58.587 [AWT-EventQueue-0] WARN  org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+23:12:02.442 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=0, activeEmployeeCount=0, newJoinersCount=0, onLeaveCount=0}
+23:12:02.451 [AWT-EventQueue-0] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+23:12:02.745 [AWT-EventQueue-0] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 0 employees
+23:12:02.774 [AWT-EventQueue-0] INFO  c.y.m.r.ui.CandidateListView - Loaded 0 candidates
+23:12:02.837 [AWT-EventQueue-0] INFO  c.y.m.r.ui.RecruitmentDashboardView - Recruitment dashboard loaded successfully
+23:12:03.100 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=0, activeEmployeeCount=0, newJoinersCount=0, onLeaveCount=0}
+23:12:03.102 [AWT-EventQueue-0] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+23:12:03.104 [AWT-EventQueue-0] INFO  c.y.myapp.EmployeeManagementApp - EIMS Application started successfully
+23:12:32.541 [AWT-EventQueue-0] INFO  c.y.m.r.EmployeeRepositoryImpl - Employee saved: EMP-AD3AC4DD
+23:12:32.542 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Employee created successfully: EMP-AD3AC4DD
+23:12:34.109 [AWT-EventQueue-0] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+23:12:34.144 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=1, activeEmployeeCount=1, newJoinersCount=1, onLeaveCount=0}
+23:12:34.146 [AWT-EventQueue-0] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+23:12:34.166 [AWT-EventQueue-0] INFO  c.yourname.myapp.ui.AddEmployeeForm - Employee created successfully
+23:12:35.214 [AWT-EventQueue-0] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 1 employees
+23:13:00.882 [AWT-EventQueue-0] INFO  c.y.m.r.ui.CandidateListView - Loaded 0 candidates
+23:13:16.066 [AWT-EventQueue-0] INFO  c.y.m.r.ui.CandidateListView - Loaded 1 candidates
+23:13:26.326 [AWT-EventQueue-0] INFO  c.y.m.r.ui.CandidateListView - Loaded 1 candidates
+23:13:33.868 [AWT-EventQueue-0] INFO  c.y.m.r.ui.CandidateListView - Loaded 1 candidates
+23:13:42.391 [AWT-EventQueue-0] INFO  c.y.m.r.ui.CandidateListView - Loaded 1 candidates
+23:14:18.580 [AWT-EventQueue-0] INFO  c.y.m.r.EmployeeRepositoryImpl - Employee saved: EMP-2CED8AE6
+23:14:18.581 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Employee created successfully: EMP-2CED8AE6
+23:14:20.771 [AWT-EventQueue-0] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 2 employees
+23:15:22.062 [AWT-EventQueue-0] INFO  c.yourname.myapp.ui.EmployeeListView - Loaded 2 employees
+23:16:00.433 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=2, activeEmployeeCount=2, newJoinersCount=2, onLeaveCount=0}
+23:16:00.435 [AWT-EventQueue-0] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+23:16:19.614 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=2, activeEmployeeCount=2, newJoinersCount=2, onLeaveCount=0}
+23:16:19.617 [AWT-EventQueue-0] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully
+23:16:25.984 [AWT-EventQueue-0] INFO  c.y.myapp.service.EmployeeService - Dashboard stats retrieved: DashboardStats{totalEmployeeCount=2, activeEmployeeCount=2, newJoinersCount=2, onLeaveCount=0}
+23:16:25.985 [AWT-EventQueue-0] INFO  com.yourname.myapp.ui.DashboardView - Dashboard statistics loaded successfully

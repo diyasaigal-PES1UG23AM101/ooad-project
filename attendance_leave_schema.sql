@@ -7,7 +7,10 @@
 -- Attendance Records Table
 CREATE TABLE IF NOT EXISTS attendance_record (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
-    employee_id     VARCHAR(20) NOT NULL COMMENT 'FK to employee.employee_id',
+    employee_id     VARCHAR(20) 
+        CHARACTER SET utf8mb4
+        COLLATE utf8mb4_unicode_ci
+        NOT NULL COMMENT 'FK to employee.employee_id',
     attendance_date DATE        NOT NULL COMMENT 'Date of attendance',
     check_in_time   TIME                 COMMENT 'Check-in time',
     check_out_time  TIME                 COMMENT 'Check-out time',
@@ -17,12 +20,18 @@ CREATE TABLE IF NOT EXISTS attendance_record (
         ON DELETE CASCADE ON UPDATE CASCADE,
     INDEX idx_attendance_employee (employee_id),
     INDEX idx_attendance_date (attendance_date)
-) COMMENT 'Tracks daily employee attendance';
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci 
+COMMENT 'Tracks daily employee attendance';
 
 -- Leave Requests Table
 CREATE TABLE IF NOT EXISTS leave_request (
     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
-    employee_id      VARCHAR(20) NOT NULL COMMENT 'FK to employee.employee_id',
+    employee_id      VARCHAR(20) 
+        CHARACTER SET utf8mb4
+        COLLATE utf8mb4_unicode_ci
+        NOT NULL COMMENT 'FK to employee.employee_id',
     leave_from_date  DATE        NOT NULL COMMENT 'Start date of leave',
     leave_to_date    DATE        NOT NULL COMMENT 'End date of leave',
     leave_status     VARCHAR(20) NOT NULL DEFAULT 'PENDING'
@@ -32,14 +41,23 @@ CREATE TABLE IF NOT EXISTS leave_request (
         ON DELETE CASCADE ON UPDATE CASCADE,
     INDEX idx_leave_employee (employee_id),
     INDEX idx_leave_status (leave_status)
-) COMMENT 'Employee leave requests';
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci 
+COMMENT 'Employee leave requests';
 
 -- Leave Balance Table
 CREATE TABLE IF NOT EXISTS leave_balance (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    employee_id VARCHAR(20) NOT NULL UNIQUE COMMENT 'FK to employee.employee_id',
+    employee_id VARCHAR(20) 
+        CHARACTER SET utf8mb4
+        COLLATE utf8mb4_unicode_ci
+        NOT NULL UNIQUE COMMENT 'FK to employee.employee_id',
     balance     INT         NOT NULL DEFAULT 20 COMMENT 'Remaining leave days',
     CONSTRAINT fk_balance_employee
         FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
         ON DELETE CASCADE ON UPDATE CASCADE
-) COMMENT 'Tracks leave balance per employee (default 20 days)';
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_unicode_ci 
+COMMENT 'Tracks leave balance per employee (default 20 days)';
