@@ -1,7 +1,8 @@
 package com.yourname.myapp.config;
 
 import com.yourname.myapp.entity.Employee;
-import com.yourname.myapp.recruitment.entity.Candidate;
+import com.yourname.myapp.recruitment.entity.Candidate; // Entity field in recruitments Dhrithi 
+import com.yourname.myapp.onboarding.entity.OnboardingRecord; // Dhrithi 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -10,6 +11,7 @@ import com.yourname.myapp.entity.LeaveRequest;
 import com.yourname.myapp.entity.LeaveBalance;
 import com.yourname.myapp.entity.BenefitEnrollment;
 import com.yourname.myapp.entity.Claim;
+
 /**
  * Utility class for Hibernate SessionFactory and session management.
  * 
@@ -82,7 +84,7 @@ public class HibernateUtil {
             // ========================================================================
             String dbUrl = System.getenv("DB_URL") != null ? System.getenv("DB_URL") : "jdbc:mysql://localhost:3306/eims_db";
             String dbUsername = System.getenv("DB_USERNAME") != null ? System.getenv("DB_USERNAME") : "root";
-            String dbPassword = System.getenv("DB_PASSWORD") != null ? System.getenv("DB_PASSWORD") : "Root1231";
+            String dbPassword = System.getenv("DB_PASSWORD") != null ? System.getenv("DB_PASSWORD") : "YOUR PASSWORD PLS";
             
             // JDBC Driver Configuration
             configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
@@ -114,6 +116,7 @@ public class HibernateUtil {
             // ========================================================================
             configuration.addAnnotatedClass(Employee.class);
             configuration.addAnnotatedClass(Candidate.class);
+             configuration.addAnnotatedClass(OnboardingRecord.class);
             configuration.addAnnotatedClass(AttendanceRecord.class);
             configuration.addAnnotatedClass(LeaveRequest.class);
             configuration.addAnnotatedClass(LeaveBalance.class);
