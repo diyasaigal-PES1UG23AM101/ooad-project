@@ -1,11 +1,13 @@
 package com.yourname.myapp;
 
 import com.yourname.myapp.config.HibernateUtil;
+import com.yourname.myapp.onboarding.entity.OnboardingRecord;
 import com.yourname.myapp.service.EmployeeService;
 import com.yourname.myapp.ui.*;
 
 import com.yourname.myapp.recruitment.ui.CandidateListView;
 import com.yourname.myapp.recruitment.ui.RecruitmentDashboardView;
+import com.yourname.myapp.onboarding.ui.OnboardingDashboardView;
 import com.yourname.myapp.ui.attendance.AttendanceLeaveMainView;
 import com.yourname.myapp.ui.benefits.BenefitsMainView;
 import org.slf4j.Logger;
@@ -34,6 +36,7 @@ public class EmployeeManagementApp extends JFrame {
     private BenefitsMainView benefitsMainView;  
     private CandidateListView candidateListView;
     private RecruitmentDashboardView recruitmentDashboardView;
+    private OnboardingDashboardView onboardingDashboardView;
 
     public EmployeeManagementApp() {
         try {
@@ -64,6 +67,7 @@ public class EmployeeManagementApp extends JFrame {
             employeeListView = new EmployeeListView(employeeService);
             candidateListView = new CandidateListView();
             recruitmentDashboardView = new RecruitmentDashboardView();
+            onboardingDashboardView = new OnboardingDashboardView(); 
             attendanceLeaveMainView = new AttendanceLeaveMainView();
             benefitsMainView = new BenefitsMainView();
 
@@ -156,6 +160,18 @@ public class EmployeeManagementApp extends JFrame {
         recruitmentDashboardButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         recruitmentDashboardButton.addActionListener(e -> switchToView(recruitmentDashboardView.getRootPane(), recruitmentDashboardView));
 
+        JButton onboardingDashboardButton = new JButton("Onboarding Dashboard");
+        onboardingDashboardButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        onboardingDashboardButton.setMaximumSize(new Dimension(180, 40));
+        onboardingDashboardButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        onboardingDashboardButton.setBackground(new Color(52, 73, 94));
+        onboardingDashboardButton.setForeground(Color.WHITE);
+        onboardingDashboardButton.setBorderPainted(false);
+        onboardingDashboardButton.setFocusPainted(false);
+        onboardingDashboardButton.setOpaque(true);
+        onboardingDashboardButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        onboardingDashboardButton.addActionListener(e -> switchToView(onboardingDashboardView.getRootPane(), onboardingDashboardView));
+
         JButton candidateListButton = new JButton("Candidate List");
         candidateListButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         candidateListButton.setMaximumSize(new Dimension(180, 40));
@@ -245,6 +261,8 @@ public class EmployeeManagementApp extends JFrame {
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(candidateListButton);
         sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(onboardingDashboardButton);
+        sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(attendanceButton);
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(benefitsButton);
@@ -279,6 +297,8 @@ public class EmployeeManagementApp extends JFrame {
             ((RecruitmentDashboardView) viewObject).refresh();
         } else if (viewObject instanceof CandidateListView) {
             ((CandidateListView) viewObject).refresh();
+        }else if (viewObject instanceof OnboardingDashboardView){
+            ((OnboardingDashboardView) viewObject).refresh(); 
         }
     }
 
