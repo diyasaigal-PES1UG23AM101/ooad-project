@@ -84,7 +84,7 @@ public class HibernateUtil {
             // ========================================================================
             String dbUrl = System.getenv("DB_URL") != null ? System.getenv("DB_URL") : "jdbc:mysql://localhost:3306/eims_db";
             String dbUsername = System.getenv("DB_USERNAME") != null ? System.getenv("DB_USERNAME") : "root";
-            String dbPassword = System.getenv("DB_PASSWORD") != null ? System.getenv("DB_PASSWORD") : "Guggulop@9";
+            String dbPassword = System.getenv("DB_PASSWORD") != null ? System.getenv("DB_PASSWORD") : "YourPasswordPls";
             
             // JDBC Driver Configuration
             configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
