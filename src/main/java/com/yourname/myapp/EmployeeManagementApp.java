@@ -1,18 +1,19 @@
 package com.yourname.myapp;
 
 import com.yourname.myapp.config.HibernateUtil;
-import com.yourname.myapp.onboarding.entity.OnboardingRecord;
 import com.yourname.myapp.service.EmployeeService;
 import com.yourname.myapp.ui.*;
 
 import com.yourname.myapp.recruitment.ui.CandidateListView;
 import com.yourname.myapp.recruitment.ui.RecruitmentDashboardView;
 import com.yourname.myapp.onboarding.ui.OnboardingDashboardView;
-import com.yourname.myapp.ui.attendance.AttendanceLeaveMainView;
+import com.yourname.myapp.attendance.AttendanceLeaveMainView;
 import com.yourname.myapp.ui.benefits.BenefitsMainView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.yourname.myapp.payroll.ui.PayrollDashboardView;
+import com.yourname.myapp.performance.ui.PerformanceManagementView;
+import com.yourname.myapp.workforce.ui.WorkforcePlanningView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +40,8 @@ public class EmployeeManagementApp extends JFrame {
     private RecruitmentDashboardView recruitmentDashboardView;
     private OnboardingDashboardView onboardingDashboardView;
     private PayrollDashboardView payrollDashboardView;
+    private PerformanceManagementView performanceManagementView;
+    private WorkforcePlanningView workforcePlanningView;
 
     public EmployeeManagementApp() {
         try {
@@ -73,6 +76,8 @@ public class EmployeeManagementApp extends JFrame {
             attendanceLeaveMainView = new AttendanceLeaveMainView();
             benefitsMainView = new BenefitsMainView();
             payrollDashboardView = new PayrollDashboardView();
+            performanceManagementView = new PerformanceManagementView();
+            workforcePlanningView = new WorkforcePlanningView();
 
             // Set initial view (Dashboard)
             switchToView(dashboardView.getRootPane(), dashboardView);
@@ -226,6 +231,30 @@ public class EmployeeManagementApp extends JFrame {
             switchToView(payrollDashboardView, payrollDashboardView)
         );
 
+        JButton performanceButton = new JButton("Performance");
+        performanceButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        performanceButton.setMaximumSize(new Dimension(180, 40));
+        performanceButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        performanceButton.setBackground(new Color(52, 73, 94));
+        performanceButton.setForeground(Color.WHITE);
+        performanceButton.setBorderPainted(false);
+        performanceButton.setFocusPainted(false);
+        performanceButton.setOpaque(true);
+        performanceButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        performanceButton.addActionListener(e -> switchToView(performanceManagementView, performanceManagementView));
+
+        JButton workforceButton = new JButton("Workforce Planning");
+        workforceButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        workforceButton.setMaximumSize(new Dimension(180, 40));
+        workforceButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        workforceButton.setBackground(new Color(52, 73, 94));
+        workforceButton.setForeground(Color.WHITE);
+        workforceButton.setBorderPainted(false);
+        workforceButton.setFocusPainted(false);
+        workforceButton.setOpaque(true);
+        workforceButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        workforceButton.addActionListener(e -> switchToView(workforcePlanningView, workforcePlanningView));
+
 
         JButton addEmployeeButton = new JButton("Add Employee");
         addEmployeeButton.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -288,6 +317,10 @@ public class EmployeeManagementApp extends JFrame {
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(payrollButton);
         sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(performanceButton);
+        sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(workforceButton);
+        sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(addEmployeeButton);
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(refreshButton);
@@ -323,6 +356,10 @@ public class EmployeeManagementApp extends JFrame {
         }
         else if (viewObject instanceof PayrollDashboardView) {
             ((PayrollDashboardView) viewObject).repaint();
+        } else if (viewObject instanceof PerformanceManagementView) {
+            ((PerformanceManagementView) viewObject).refresh();
+        } else if (viewObject instanceof WorkforcePlanningView) {
+            ((WorkforcePlanningView) viewObject).refresh();
         }
     }
 

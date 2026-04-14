@@ -1,4 +1,4 @@
-package com.yourname.myapp.ui.attendance;
+package com.yourname.myapp.attendance;
 
 import com.yourname.myapp.facade.LeaveManagementFacade;
 import com.yourname.myapp.service.AttendanceService;
