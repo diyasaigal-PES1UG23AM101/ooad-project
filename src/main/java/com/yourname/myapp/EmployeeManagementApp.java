@@ -12,6 +12,7 @@ import com.yourname.myapp.ui.attendance.AttendanceLeaveMainView;
 import com.yourname.myapp.ui.benefits.BenefitsMainView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.yourname.myapp.payroll.ui.PayrollDashboardView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +38,7 @@ public class EmployeeManagementApp extends JFrame {
     private CandidateListView candidateListView;
     private RecruitmentDashboardView recruitmentDashboardView;
     private OnboardingDashboardView onboardingDashboardView;
+    private PayrollDashboardView payrollDashboardView;
 
     public EmployeeManagementApp() {
         try {
@@ -70,6 +72,7 @@ public class EmployeeManagementApp extends JFrame {
             onboardingDashboardView = new OnboardingDashboardView(); 
             attendanceLeaveMainView = new AttendanceLeaveMainView();
             benefitsMainView = new BenefitsMainView();
+            payrollDashboardView = new PayrollDashboardView();
 
             // Set initial view (Dashboard)
             switchToView(dashboardView.getRootPane(), dashboardView);
@@ -208,6 +211,22 @@ public class EmployeeManagementApp extends JFrame {
         benefitsButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         benefitsButton.addActionListener(e -> switchToView(benefitsMainView, benefitsMainView));
 
+        JButton payrollButton = new JButton("Payroll");
+        payrollButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        payrollButton.setMaximumSize(new Dimension(180, 40));
+        payrollButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        payrollButton.setBackground(new Color(52, 73, 94));
+        payrollButton.setForeground(Color.WHITE);
+        payrollButton.setBorderPainted(false);
+        payrollButton.setFocusPainted(false);
+        payrollButton.setOpaque(true);
+        payrollButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        payrollButton.addActionListener(e -> 
+            switchToView(payrollDashboardView, payrollDashboardView)
+        );
+
+
         JButton addEmployeeButton = new JButton("Add Employee");
         addEmployeeButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         addEmployeeButton.setMaximumSize(new Dimension(180, 40));
@@ -267,6 +286,8 @@ public class EmployeeManagementApp extends JFrame {
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(benefitsButton);
         sidebar.add(Box.createVerticalStrut(5));
+        sidebar.add(payrollButton);
+        sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(addEmployeeButton);
         sidebar.add(Box.createVerticalStrut(5));
         sidebar.add(refreshButton);
@@ -299,6 +320,9 @@ public class EmployeeManagementApp extends JFrame {
             ((CandidateListView) viewObject).refresh();
         }else if (viewObject instanceof OnboardingDashboardView){
             ((OnboardingDashboardView) viewObject).refresh(); 
+        }
+        else if (viewObject instanceof PayrollDashboardView) {
+            ((PayrollDashboardView) viewObject).repaint();
         }
     }
 
