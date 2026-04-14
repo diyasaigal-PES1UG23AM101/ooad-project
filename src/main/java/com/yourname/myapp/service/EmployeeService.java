@@ -7,6 +7,10 @@ import com.yourname.myapp.entity.Employee;
 import com.yourname.myapp.entity.EmploymentStatus;
 import com.yourname.myapp.exception.DuplicateEmployeeIdException;
 import com.yourname.myapp.exception.EmployeeNotFoundException;
+import com.yourname.myapp.performance.repository.AppraisalRepository;
+import com.yourname.myapp.performance.repository.AppraisalRepositoryImpl;
+import com.yourname.myapp.performance.repository.PromotionRepository;
+import com.yourname.myapp.performance.repository.PromotionRepositoryImpl;
 import com.yourname.myapp.repository.EmployeeRepository;
 import com.yourname.myapp.repository.EmployeeRepositoryImpl;
 import org.slf4j.Logger;
@@ -25,9 +29,13 @@ import java.util.Optional;
 public class EmployeeService {
     private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
     private final EmployeeRepository employeeRepository;
+    private final AppraisalRepository appraisalRepository;
+    private final PromotionRepository promotionRepository;
 
     public EmployeeService() {
         this.employeeRepository = new EmployeeRepositoryImpl();
+        this.appraisalRepository = new AppraisalRepositoryImpl();
+        this.promotionRepository = new PromotionRepositoryImpl();
     }
 
     /**
@@ -158,14 +166,22 @@ public class EmployeeService {
      */
     public void deleteEmployee(String id) {
         try {
-            // Verify employee exists before deletion
-            getEmployeeById(id);
+            String normalizedId = id == null ? null : id.trim();
+            if (normalizedId == null || normalizedId.isEmpty()) {
+                throw new IllegalArgumentException("Employee ID is required");
+            }
 
-            boolean deleted = employeeRepository.deleteById(id);
+            // Verify employee exists before deletion
+            getEmployeeById(normalizedId);
+
+            int deletedAppraisals = appraisalRepository.deleteByEmployeeId(normalizedId);
+            int deletedPromotions = promotionRepository.deleteByEmployeeId(normalizedId);
+
+            boolean deleted = employeeRepository.deleteById(normalizedId);
             if (deleted) {
-                logger.info("Employee deleted successfully: {}", id);
+                logger.info("Employee deleted successfully: {} (appraisals removed: {}, promotions removed: {})", normalizedId, deletedAppraisals, deletedPromotions);
             } else {
-                throw new EmployeeNotFoundException("Failed to delete employee with ID: " + id);
+                throw new EmployeeNotFoundException("Failed to delete employee with ID: " + normalizedId);
             }
         } catch (EmployeeNotFoundException e) {
             logger.warn("Cannot delete - employee not found: {}", id);

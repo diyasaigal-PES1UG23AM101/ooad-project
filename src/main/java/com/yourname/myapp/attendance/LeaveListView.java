@@ -1,4 +1,4 @@
-package com.yourname.myapp.ui.attendance;
+package com.yourname.myapp.attendance;
 
 import com.yourname.myapp.entity.LeaveRequest;
 import com.yourname.myapp.exception.LeaveBalanceExceededException;

@@ -12,6 +12,9 @@ import com.yourname.myapp.entity.LeaveBalance;
 import com.yourname.myapp.entity.BenefitEnrollment;
 import com.yourname.myapp.entity.Claim;
 import com.yourname.myapp.payroll.entity.Payroll;
+import com.yourname.myapp.performance.entity.Appraisal;
+import com.yourname.myapp.performance.entity.Promotion;
+import com.yourname.myapp.workforce.entity.WorkforcePlan;
 
 /**
  * Utility class for Hibernate SessionFactory and session management.
@@ -124,6 +127,9 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(BenefitEnrollment.class);
             configuration.addAnnotatedClass(Claim.class);
             configuration.addAnnotatedClass(Payroll.class);
+            configuration.addAnnotatedClass(Appraisal.class);
+            configuration.addAnnotatedClass(Promotion.class);
+            configuration.addAnnotatedClass(WorkforcePlan.class);
             
             // Build SessionFactory from configuration
             sessionFactory = configuration.buildSessionFactory();
