@@ -11,6 +11,7 @@ import com.yourname.myapp.entity.LeaveRequest;
 import com.yourname.myapp.entity.LeaveBalance;
 import com.yourname.myapp.entity.BenefitEnrollment;
 import com.yourname.myapp.entity.Claim;
+import com.yourname.myapp.payroll.entity.Payroll;
 
 /**
  * Utility class for Hibernate SessionFactory and session management.
@@ -84,7 +85,7 @@ public class HibernateUtil {
             // ========================================================================
             String dbUrl = System.getenv("DB_URL") != null ? System.getenv("DB_URL") : "jdbc:mysql://localhost:3306/eims_db";
             String dbUsername = System.getenv("DB_USERNAME") != null ? System.getenv("DB_USERNAME") : "root";
-            String dbPassword = System.getenv("DB_PASSWORD") != null ? System.getenv("DB_PASSWORD") : "Root1231";
+            String dbPassword = System.getenv("DB_PASSWORD") != null ? System.getenv("DB_PASSWORD") : "YourPasswordPlease";
             
             // JDBC Driver Configuration
             configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
@@ -122,6 +123,7 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(LeaveBalance.class);
             configuration.addAnnotatedClass(BenefitEnrollment.class);
             configuration.addAnnotatedClass(Claim.class);
+            configuration.addAnnotatedClass(Payroll.class);
             
             // Build SessionFactory from configuration
             sessionFactory = configuration.buildSessionFactory();
